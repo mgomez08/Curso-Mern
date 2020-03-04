@@ -1,0 +1,10 @@
+@import "./scss/index.scss";
+
+.Success {
+  border: 1px solid $success;
+  background-color: $background-success;
+}
+.Error {
+  border: 1px solid $error;
+  background-color: $background-error;
+}
