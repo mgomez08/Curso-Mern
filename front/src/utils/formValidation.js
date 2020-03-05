@@ -27,6 +27,6 @@ export function emailValidation(inputData) {
   }
 }
 function removeClassErrorSuccess(inputData) {
-  inputData.classList.remove("success");
-  inputData.classList.remove("error");
+  inputData.classList.remove("Success");
+  inputData.classList.remove("Error");
 }
