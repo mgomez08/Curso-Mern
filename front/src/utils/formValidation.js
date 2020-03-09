@@ -12,9 +12,9 @@ export function minLengthValidation(inputData, minLength) {
   }
 }
 export function emailValidation(inputData) {
+  // eslint-disable-next-line no-useless-escape
   const emailValid = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
   const { value } = inputData;
-
   removeClassErrorSuccess(inputData);
 
   const resultValidation = emailValid.test(value);

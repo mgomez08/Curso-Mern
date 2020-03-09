@@ -4,10 +4,16 @@ import { Redirect } from "react-router-dom";
 import Logo from "../../../assets/img/png/LogoLogin.png";
 import "../SignIn/SignIn.scss";
 import RegisterForm from "../../../components/Admin/RegisterForm";
+import LoginForm from "../../../components/Admin/LoginForm";
+import { getAccessTokenApi } from "../../../api/auth";
 
 export default function SignIn() {
   const { Content } = Layout;
   const { TabPane } = Tabs;
+
+  if (getAccessTokenApi()) {
+    return <Redirect to="/admin" />;
+  }
   return (
     <Layout className="sign-in">
       <Content className="sign-in__content">
@@ -17,7 +23,7 @@ export default function SignIn() {
         <div className="sign-in__content-tabs">
           <Tabs type="card">
             <TabPane tab={<span>Entrar</span>} key="1">
-              Login Formulario
+              <LoginForm />
             </TabPane>
             <TabPane tab={<span>Nuevo usuario</span>} key="2">
               <RegisterForm />
