@@ -11,6 +11,7 @@ import {
 import NoAvatar from "../../../../assets/img/png/NoAvatar.png";
 import Modal from "../../../Modal";
 import EditUserForm from "../EditUserForm";
+import AddUserForm from "../AddUserForm";
 import "./ListUsers.scss";
 import {
   getAvatarApi,
@@ -28,16 +29,32 @@ export default function ListUsers(props) {
   const [modalTitle, setModalTitle] = useState("");
   const [modalContent, setModalContent] = useState("");
 
+  const addUserModal = () => {
+    setIsVisibleModal(true);
+    setModalTitle("Creando nuevo usuario");
+    setModalContent(
+      <AddUserForm
+        setIsVisibleModal={setIsVisibleModal}
+        setReloadUsers={setReloadUsers}
+      />
+    );
+  };
+
   return (
     <div className="list-users">
-      <div className="list-users__switch">
-        <Switch
-          defaultChecked
-          onChange={() => setViewActives(!viewUsersActive)}
-        />
-        <span>
-          {viewUsersActive ? "Usuarios Activos" : "Usuarios Inactivos"}
-        </span>
+      <div className="list-users__header">
+        <div className="list-users__header-switch">
+          <Switch
+            defaultChecked
+            onChange={() => setViewActives(!viewUsersActive)}
+          />
+          <span>
+            {viewUsersActive ? "Usuarios Activos" : "Usuarios Inactivos"}
+          </span>
+        </div>
+        <Button type="primary" onClick={addUserModal}>
+          Nuevo Usuario
+        </Button>
       </div>
       {viewUsersActive ? (
         <UsersActive
@@ -135,7 +152,7 @@ function UserActive(props) {
   };
 
   const showDeleteConfirm = () => {
-    const accessToken = getAccessTokenApi;
+    const accessToken = getAccessTokenApi();
 
     confirm({
       title: "Eliminando usuario",
@@ -227,7 +244,7 @@ function UserInactive(props) {
       });
   };
   const showDeleteConfirm = () => {
-    const accessToken = getAccessTokenApi;
+    const accessToken = getAccessTokenApi();
 
     confirm({
       title: "Eliminando usuario",

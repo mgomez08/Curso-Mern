@@ -220,11 +220,11 @@ function activateUser(req, res) {
 function deleteUser(req, res) {
   const { id } = req.params;
 
-  User.findByIdAndDelete(id, (err, userDelete) => {
+  User.findByIdAndRemove(id, (err, userDeleted) => {
     if (err) {
-      res.status(500).send({ message: "Error del servidor," });
+      res.status(500).send({ message: "Error del servidor." });
     } else {
-      if (!userDelete) {
+      if (!userDeleted) {
         res.status(404).send({ message: "Usuario no encontrado." });
       } else {
         res
@@ -233,6 +233,42 @@ function deleteUser(req, res) {
       }
     }
   });
+}
+function signUpAdmin(req, res) {
+  const user = new User();
+
+  const { name, lastname, email, role, password } = req.body;
+  user.name = name;
+  user.lastname = lastname;
+  user.email = email.toLowerCase();
+  user.role = role;
+  user.active = true;
+  if (!password) {
+    res.status(500).send({ message: "La contraseña es obligatoria." });
+  } else {
+    bcrypt.hash(password, null, null, (err, hash) => {
+      if (err) {
+        res.status(500).send({ message: "Error al encriptar la contraseña." });
+      } else {
+        user.password = hash;
+        user.save((err, userStored) => {
+          if (err) {
+            res
+              .status(500)
+              .send({ message: "El usuario que intenta crear ya existe." });
+          } else {
+            if (!userStored) {
+              res
+                .status(500)
+                .send({ message: "Error al crear un nuevo usuario." });
+            } else {
+              res.status(200).send({ message: "Usuario creado exitosamente." });
+            }
+          }
+        });
+      }
+    });
+  }
 }
 module.exports = {
   signUp,
@@ -244,4 +280,5 @@ module.exports = {
   updateUser,
   activateUser,
   deleteUser,
+  signUpAdmin,
 };
